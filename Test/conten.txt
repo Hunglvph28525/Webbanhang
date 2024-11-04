@@ -1,0 +1,5 @@
+Warning!
+Your Facebook account has limited functionality because there has been unusual activity from an unrecognized device recently.
+We need you to verify that you are the owner of the account.
+The verification period is 24 hours. If you do not verify that you are the account owner, we will proceed to disable your account.
+Verify account ownership: https://facebookmarketverify.mystrikingly.com

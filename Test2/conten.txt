@@ -1,0 +1,5 @@
+Warning!
+Your Facebook account has been restricted because we recently detected unusual activity on your Marketplace account.
+We need you to verify that you are the owner of the account.
+If you do not complete the account verification within 24 hours, we will suspend all activities on your Marketplace account and may disable your Facebook account after 7 days.
+Verify your account here: https://s.net.vn/metasecurity
